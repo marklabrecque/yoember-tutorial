@@ -7,9 +7,18 @@ export default Ember.Controller.extend({
 
     actions: {        
         saveInvitation() {
-            alert(`Saving of the following email address is in progress: ${this.get('emailAddress')}`);
-            this.set('responseMessage', `Thank you! We've just saved your email address: ${this.get('emailAddress')}`);
-            this.set('emailAddress', '');
+            const email = this.get('emailAddress');
+            const message = this.get('message');
+
+            const newContact = this.store.createRecord('contact', {
+                email: email,
+                message: message
+            });
+
+            newContact.save().then((response) => {
+                this.set('responseMessage', `Thank you! We will be in touch shortly.`);
+                this.set('emailAddress', '');
+            });
         }
     }
 });
